@@ -18,6 +18,7 @@ Sub LoopSheetsWithCondition()
         sSheetName = oDoc.Sheets.getByIndex(i).getName()
         
         ' Skip sheets named "Summary" or "Template"
+        ' In BASIC does not equal is <>
         If sSheetName <> "Summary" And sSheetName <> "Template" Then
             ' Activate the sheet
             oDoc.getCurrentController().setActiveSheet(oDoc.Sheets.getByIndex(i))
@@ -26,7 +27,8 @@ Sub LoopSheetsWithCondition()
             dispatcher.executeDispatch(document, ".uno:GoToCell", "", 0, args1())
             dispatcher.executeDispatch(document, ".uno:NumberFormatCurrency", "", 0, Array())
             
-            MsgBox "Formatted " & sSheetName
+            rem below is a success message which can be uncommented to give a popup for each tab
+            'MsgBox "Formatted " & sSheetName
         End If
     Next i
 End Sub
