@@ -4,30 +4,29 @@ Sub LoopSheetsWithCondition()
     Dim sSheetName As String
     Dim i As Integer
     Dim document As Object
-    Dim dispatcher as Object
-    
+    Dim dispatcher As Object
     
     oDoc = ThisComponent
+    document = oDoc.CurrentController.Frame
     dispatcher = createUnoService("com.sun.star.frame.DispatchHelper")
-    rem ----------------------------------------------------------------------
-    dim args1(0) as new com.sun.star.beans.PropertyValue
+    
+    Dim args1(0) As New com.sun.star.beans.PropertyValue
     args1(0).Name = "ToPoint"
     args1(0).Value = "$D$2:$D$1000"
-      
     
     For i = 0 To oDoc.Sheets.getCount() - 1
         sSheetName = oDoc.Sheets.getByIndex(i).getName()
         
         ' Skip sheets named "Summary" or "Template"
-        ' does not equal in BASIC is <>
         If sSheetName <> "Summary" And sSheetName <> "Template" Then
-            ' Perform actions on the sheet
-            ' MsgBox "Processing data in: " & sSheetName
-            dispatcher.executeDispatch(oDoc, ".uno:GoToCell", "", 0, args1())
-            rem ----------------------------------------------------------------------
-            dispatcher.executeDispatch(oDoc, ".uno:NumberFormatCurrency", "", 0, Array())
-            rem ----------------------------------------------------------------------
-
+            ' Activate the sheet
+            oDoc.getCurrentController().setActiveSheet(oDoc.Sheets.getByIndex(i))
+            
+            ' Apply currency format using dispatcher (same as working macro)
+            dispatcher.executeDispatch(document, ".uno:GoToCell", "", 0, args1())
+            dispatcher.executeDispatch(document, ".uno:NumberFormatCurrency", "", 0, Array())
+            
+            MsgBox "Formatted " & sSheetName
         End If
     Next i
 End Sub
