@@ -1,0 +1,33 @@
+Sub LoopSheetsWithCondition()
+    Dim oDoc As Object
+    Dim oSheet As Object
+    Dim sSheetName As String
+    Dim i As Integer
+    Dim document As Object
+    Dim dispatcher as Object
+    
+    
+    oDoc = ThisComponent
+    dispatcher = createUnoService("com.sun.star.frame.DispatchHelper")
+    rem ----------------------------------------------------------------------
+    dim args1(0) as new com.sun.star.beans.PropertyValue
+    args1(0).Name = "ToPoint"
+    args1(0).Value = "$D$2:$D$1000"
+      
+    
+    For i = 0 To oDoc.Sheets.getCount() - 1
+        sSheetName = oDoc.Sheets.getByIndex(i).getName()
+        
+        ' Skip sheets named "Summary" or "Template"
+        ' does not equal in BASIC is <>
+        If sSheetName <> "Summary" And sSheetName <> "Template" Then
+            ' Perform actions on the sheet
+            ' MsgBox "Processing data in: " & sSheetName
+            dispatcher.executeDispatch(oDoc, ".uno:GoToCell", "", 0, args1())
+            rem ----------------------------------------------------------------------
+            dispatcher.executeDispatch(oDoc, ".uno:NumberFormatCurrency", "", 0, Array())
+            rem ----------------------------------------------------------------------
+
+        End If
+    Next i
+End Sub
