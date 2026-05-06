@@ -1,3 +1,11 @@
+'May2026 this is meant to be a simple example of using a for loop across all sheets.
+'the actual task here is just to format D col as currency. The central task though was 
+'recorded usimg the Macro recorder so has 'despatcher' references in it... and the 
+' whole thing is... fragile. Making changes often results in error messages
+
+
+
+
 Sub LoopSheetsWithCondition()
     Dim oDoc As Object
     Dim oSheet As Object
