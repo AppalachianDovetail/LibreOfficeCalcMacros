@@ -1,0 +1,19 @@
+' This will auto-size any column with data in it
+
+Sub OptimiseAllUsedColumns
+    Dim doc As Object
+    Dim sheet As Object
+    Dim cursor As Object
+    Dim columns As Object
+    
+    doc = ThisComponent
+    sheet = doc.Sheets(0) ' Or get active sheet
+    cursor = sheet.createCursor()
+    cursor.gotoEndOfUsedArea(True)
+    
+    ' Get columns in the used range
+    columns = cursor.getColumns()
+    
+    ' Set all to optimal width
+    columns.OptimalWidth = True
+End Sub
